@@ -33,6 +33,8 @@ public class BalloonListServlet  extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String balloonColor = request.getParameter("color");
+        request.getSession().setAttribute("balloonColor",balloonColor);
+        response.sendRedirect("/selectBalloon");
     }
 }

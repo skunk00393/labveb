@@ -24,11 +24,17 @@ public class BalloonOrderServlet  extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext webContext = new WebContext(req,resp,req.getServletContext());
-        this.springTemplateEngine.process("selectBalloonSize.html",webContext,resp.getWriter());
+        webContext.setVariable("balloonSize",req.getSession().getAttribute("balloonSize"));
+        webContext.setVariable("balloonColor",req.getSession().getAttribute("balloonColor"));
+        this.springTemplateEngine.process("deliveryInfo.html",webContext,resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String clientName = request.getParameter("clientName");
+        String clientAddress = request.getParameter("clientAddress");
+        request.getSession().setAttribute("clientName",clientName);
+        request.getSession().setAttribute("clientAddress",clientAddress);
+        response.sendRedirect("/ConfirmationInfo");
     }
 }

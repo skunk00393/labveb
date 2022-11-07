@@ -6,18 +6,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 public class Balloon {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    private Long id;
 
     public String name;
-
     public String description;
 
-//    private Manufacturer manufacturer;
+    private Manufacturer manufacturer;
+
+    public Balloon(String name, String description, Manufacturer manufacturer){
+        this.id = (long) (Math.random()*1000);
+        this.name = name;
+        this.description = description;
+        this.manufacturer=manufacturer;
+    }
 
 }

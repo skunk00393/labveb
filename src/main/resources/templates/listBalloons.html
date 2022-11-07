@@ -14,12 +14,31 @@
     <h1>Welcome to our Balloon Shop App</h1>
 </header>
 <main>
-    <h2>Choose balloon size:</h2>
-    <input type="radio" th:each="balloon : ${listBalloons}" name="size" value="${balloon.name}"><th:block th:text="${balloon.description}"></th:block></input>
-
-
+    <h2>Choose balloon:</h2>
+    <form method="post" action="">
+    <th:block  th:each="balloon : ${balloons}">
+        <input type="radio" name="color" th:value="${balloon.getName()}"/>
+        <label th:text="${balloon.getDescription()}"></label>
+        <a type="button" th:href="@{'/balloons/edit-form/{id}' (id=${balloon.getId()})}"
+           class="btn">
+            <i>Edit</i>
+        </a>
+        <br/>
+    </th:block>
     <br/>
-    <a href="/selectBalloonSize.html">Submit</a>
+        <button id="submit" type="submit">Izberi</button>
+        <a type="button" class="btn btn-primary" href="/balloons/add-form">Dodadi</a>
+    </form>
+        <th:block th:each="balloon : ${balloons}">
+            <form th:method="DELETE" th:action="@{'/balloons/delete/{id}' (id=${balloon.getId()})}">
+            <button type="submit"
+                    class="btn btn-sm btn-danger delete-product" th:text="${balloon.getName()}">
+                <i class="fa fa-trash">Delete</i>
+            </button>
+            </form>
+        </th:block>
+
+
 </main>
 </body>
 </html>

@@ -32,12 +32,14 @@
 </header>
 <section>
     <h2>Choose balloon size:</h2>
+    <form method="post" action="">
     <input type="radio" name="size" value="Small"> Small <br/>
     <input type="radio" name="size" value="Medium"> Medium <br/>
     <input type="radio" name="size" value="Big"> Big <br/>
     <input type="radio" name="size" value="Extra Big"> Extra Big <br/>
     <br/>
-    <a href="/deliveryInfo.html">Submit</a>
+        <button id="submit" type="submit">Izberi</button>
+    </form>
 </section>
 <aside>
     <table>
@@ -48,7 +50,7 @@
         </tr>
         <tr>
             <td><b>Balloon Type </b></td>
-            <td>Red Balloon</td>
+            <td th:text="${balloonColor}"></td>
         </tr>
     </table>
 </aside>

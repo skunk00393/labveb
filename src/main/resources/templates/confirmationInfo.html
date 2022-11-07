@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <title>WP lab - Confirmation Info</title>
@@ -29,32 +29,32 @@
     </tr>
     <tr>
       <td><b>Client Name </b></td>
-      <td>Petko Petkov</td>
+      <td th:text="${clientName}"></td>
     </tr>
     <tr>
       <td><b>Client Address </b></td>
-      <td>Partizanska 5, Skopje</td>
+      <td th:text="${clientAddress}"></td>
     </tr>
     <tr>
       <td><b>Client IP Address</b></td>
-      <td>127.0.0.1</td>
+      <td th:text="${ipAddress}"></td>
     </tr>
     <tr>
       <td><b>Client Browser</b></td>
-      <td>Mozilla</td>
+      <td th:text="${browser}"></td>
     </tr>
     <tr>
       <td><b>Balloon Color </b></td>
-      <td>Red Balloon</td>
+      <td th:text="${balloonColor}"></td>
     </tr>
     <tr>
       <td><b>Balloon Size </b></td>
-      <td>Large</td>
+      <td th:text="${balloonSize}"></td>
     </tr>
   </table>
-  <div>
-    <a href="/">Log out</a>
-  </div>
+  <form action="" method="post">
+    <button name="logout">Logout</button>
+  </form>
 
 
 </section>

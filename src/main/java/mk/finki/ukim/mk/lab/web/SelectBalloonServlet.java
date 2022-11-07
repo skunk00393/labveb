@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "SelectBalloonServlet ", value = "/selectBalloon ")
+@WebServlet(name = "SelectBalloonServlet ", value = "/selectBalloon")
 public class SelectBalloonServlet extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;
@@ -20,11 +20,14 @@ public class SelectBalloonServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         WebContext webContext = new WebContext(request,response,request.getServletContext());
-        this.springTemplateEngine.process("selectBalloonsSize.html",webContext,response.getWriter());
+        webContext.setVariable("balloonColor", request.getSession().getAttribute("balloonColor"));
+        this.springTemplateEngine.process("selectBalloonSize.html",webContext,response.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String balloonSize = request.getParameter("size");
+        request.getSession().setAttribute("balloonSize",balloonSize);
+        response.sendRedirect("/BalloonOrder");
     }
 }
