@@ -1,6 +1,5 @@
 package mk.finki.ukim.mk.lab.web.controller;
 
-import mk.finki.ukim.mk.lab.bootstrap.DataHolder;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import mk.finki.ukim.mk.lab.service.ManufacturerService;
 import org.springframework.stereotype.Controller;
@@ -27,18 +26,24 @@ public class BalloonController {
         model.addAttribute("balloons",balloonService.listAll());
         return "listBalloons";
     }
+
+    @RequestMapping(value = "/balloonChosen", method = GET)
+    public String redirectToSize(@RequestParam("color") int color){
+        return "redirect:/balloonSize/"+color;
+    }
+
     @RequestMapping(value = "/balloons/add", method = POST)
-    public String saveBalloon(@RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("manId") int manId){
+    public String saveBalloon(@RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("manId") Long manId){
             balloonService.add(name,description,manId);
             return "redirect:/balloons";
     }
     @RequestMapping(value = "/balloons/edit", method = POST)
-    public String editBalloon(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("manId") int manId){
+    public String editBalloon(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("manId") Long manId){
         balloonService.edit(id,name,description,manId);
         return "redirect:/balloons";
     }
     @RequestMapping(value = "/balloons/delete/{id}", method = DELETE)
-    public String deleteBalloon(@PathVariable int id){
+    public String deleteBalloon(@PathVariable Long id){
         if(balloonService.findById(id).isPresent()){
         balloonService.remove(id);
         }
@@ -52,7 +57,7 @@ public class BalloonController {
         return "add-balloon";
     }
     @RequestMapping(value = "/balloons/edit-form/{id}", method = GET)
-    public String deleteBalloonForm(@PathVariable int id, Model model){
+    public String deleteBalloonForm(@PathVariable Long id, Model model){
         model.addAttribute("balloon",balloonService.findById(id).get());
         model.addAttribute("manufacturers", manufacturerService.findAll());
         model.addAttribute("link", "/balloons/edit");

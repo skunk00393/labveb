@@ -2,12 +2,11 @@ package mk.finki.ukim.mk.lab.service.impl;
 
 import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Manufacturer;
-import mk.finki.ukim.mk.lab.repository.BalloonRepository;
-import mk.finki.ukim.mk.lab.repository.ManufacturerRepository;
+import mk.finki.ukim.mk.lab.repository.JpaBalloonRepository;
+import mk.finki.ukim.mk.lab.repository.JpaManufacturerRepository;
 import mk.finki.ukim.mk.lab.service.BalloonService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -15,55 +14,57 @@ import java.util.Optional;
 @Service
 public class BalloonServiceImpl implements BalloonService {
 
-    private final BalloonRepository balloonRepository;
-    private final ManufacturerRepository manufacturerRepository;
 
-    public BalloonServiceImpl(BalloonRepository balloonRepository, ManufacturerRepository manufacturerRepository) {
-        this.balloonRepository = balloonRepository;
+    private final JpaBalloonRepository jpaBalloonRepository;
+    private final JpaManufacturerRepository manufacturerRepository;
+
+    public BalloonServiceImpl(JpaBalloonRepository jpaBalloonRepository, JpaManufacturerRepository manufacturerRepository) {
+        this.jpaBalloonRepository = jpaBalloonRepository;
         this.manufacturerRepository = manufacturerRepository;
     }
 
     @Override
     public List<Balloon> listAll() {
-        List<Balloon> balloonList = balloonRepository.findAllBalloons();
+        List<Balloon> balloonList = jpaBalloonRepository.findAll();
         balloonList.sort(Comparator.comparing(Balloon::getName));
-        return balloonRepository.findAllBalloons();
+        return balloonList;
     }
 
     @Override
     public List<Balloon> searchByNameOrDescription(String text) {
-        return balloonRepository.findAllByNameOrDescription(text);
+        return jpaBalloonRepository.findAllByNameOrDescription(text,text);
     }
 
     @Override
-    public Optional<Balloon> findById(int id) {
-        return balloonRepository.findById(id);
+    public Optional<Balloon> findById(Long id) {
+        return jpaBalloonRepository.findById(id);
     }
 
     @Override
-    public void add(String name, String description, int manId) {
+    public Balloon add(String name, String description, Long manId) {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findById(manId);
-        manufacturer.ifPresent(value -> balloonRepository.addBalloon(name, description, value));
+        manufacturer.ifPresent(value -> jpaBalloonRepository.save(new Balloon(name, description, manufacturer.get())));
+        return null;
     }
 
 
     @Override
-    public void edit(int id,String name, String description, int manId) {
+    public void edit(Long id,String name, String description, Long manId) {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findById(manId);
-        Optional<Balloon> balloon = balloonRepository.findById(id);
+        Optional<Balloon> balloon = jpaBalloonRepository.findById(id);
         if(manufacturer.isPresent()){
             if(balloon.isPresent()){
                 Balloon balloonFound = balloon.get();
                 balloonFound.setName(name);
                 balloonFound.setDescription(description);
                 balloonFound.setManufacturer(manufacturer.get());
-                balloonRepository.editBalloon(id,balloonFound);
+                jpaBalloonRepository.save(balloonFound);
             }
         }
     }
 
     @Override
-    public void remove(int id) {
-        balloonRepository.deleteById(id);
+    public void remove(Long id) {
+        jpaBalloonRepository.deleteById(id);
     }
 }

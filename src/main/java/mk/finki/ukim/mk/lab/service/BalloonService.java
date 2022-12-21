@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface BalloonService {
     List<Balloon> listAll();
     List<Balloon> searchByNameOrDescription(String text);
-    Optional<Balloon> findById(int id);
+    Optional<Balloon> findById(Long id);
 
-    void add(String name, String description, int manId);
+    Balloon add(String name, String description, Long manId);
 
-    void edit(int id,String name, String description, int manId);
+    void edit(Long id,String name, String description, Long manId);
 
-    void remove(int id);
+    void remove(Long id);
 }
